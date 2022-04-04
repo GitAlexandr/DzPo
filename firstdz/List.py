@@ -1,29 +1,27 @@
 from typing import List
 
 class Product():
-     name: str
-     value:  float
-     def __init__(self, name, value):
-         self.name = name
-         self.value = value
+    name: str
+    price:  float
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
 
-class Cart():
+class Basket:
     def __init__(self):
-        self.cart: List[Product] = []
-    
+        self.basket: List[Product] = []
     def add(self, product: Product):
-        self.cart.append(product)
-        return 'add'
+        self.basket.append(product)
+        return self.basket
 
-    def remove(self, product: Product):
-        self.cart.remove(product)
-        return 'remove'
-    
+    def remove(self, name: str):
+        for product in self.basket:
+            if product.name == name:
+                self.basket.remove(product)
+        return self.basket
+
     def count_sum(self):
-        summa = 0
-        for i in range(0, len(self.cart)):
-            summa += self.cart[i].value
-        return summa
-
-
-
+        summ = 0
+        for i in range(0, len(self.basket)):
+            summ += self.basket[i].price
+        return summ

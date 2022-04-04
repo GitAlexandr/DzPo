@@ -1,54 +1,59 @@
-import pytest
 from List import *
+import pytest
+from typing import List
 
-tests = [('potato', 50.0), ('apple', 50.0), ('melon', 100.0)]
+tests = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], [Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)]),\
+    ([Product('bread', 50.0)], [Product('bread', 50.0)])]
+@pytest.mark.parametrize('basket, ideal', tests)
+def test_add(basket: List[Product], ideal : List[Product]):
+    basket1 = Basket()
+    for p in basket:
+        basket1.add(p)
+    is_equal = True
+    for p1, p2 in zip(ideal, basket1.basket):
+        if not (p1.name == p2.name and p1.price == p2.price):
+            is_equal = False
+            break
+    assert is_equal
 
+tests1 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], [Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)]),\
+    ([Product('bread', 50.0)], [Product('bread', 50.0)])]
+
+@pytest.mark.parametrize('basket, ideal', tests1)
+def test_remove(basket: List[Product], ideal : List[Product]):
+    basket2 = Basket()
+    for p in basket:
+        basket2.add(p)
+        basket2.remove(p)
+    is_equal = True
+    for p1, p2 in zip(ideal, basket2.basket):
+        if not (p1.name == p2.name and p1.price == p2.price):
+            is_equal = False
+            break
+    assert is_equal
+
+test3 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], 170.0)]
+@pytest.mark.parametrize('product, s', test3)
+def test_summ(product: Product, s: float):
+    basket3 = Basket()
+    for p in product:
+        basket3.add(p)
+    assert s == basket3.count_sum()
+
+test4 = [('bread', 50.0), ('carrot', 20.0)]
 def test_field():
-    potato = Product('potato', 66.8)
-    assert potato.name == 'potato'
+    bread = Product('bread', 50.0)
+    assert bread.name == 'bread'
 
 
-@pytest.mark.parametrize('name, value', tests)
-def test_field_name(name: str, value: float):
-    ex = Product(name, value)
-    assert ex.name == name
+@pytest.mark.parametrize('name, price', test4)
+def test_name(name: str, price: float):
+    field_name = Product(name, price)
+    assert field_name.name == name
 
 
-@pytest.mark.parametrize('name, value', tests)
-def test_field_value(name: str, value: float):
-    ex = Product(name, value)
-    assert ex.value == value
-
-
-test_1 = [([Product('potato', 50.0), Product('apple', 50.0), Product('melon', 100.0)], 'add')]
-
-@pytest.mark.parametrize('products, s', test_1)
-def test_add_cart(products: Product, s: str):
-    cart_1 = Cart()
-    for p in products:
-        cart_1.add(p)
-        assert s == cart_1.add(p)
-
-
-test_2 = [([Product('potato', 50.0), Product('apple', 50.0), Product('melon', 100.0)], 'remove')]
-
-@pytest.mark.parametrize('products, s', test_2)
-def test_remove_cart(products: Product, s: str):
-    cart_2 = Cart()
-    for p in products:
-        cart_2.add(p)
-        assert s == cart_2.remove(p)
-
-
-test_3 = [([Product('potato', 50.0), Product('apple', 50.0), Product('melon', 100.0)], 200.0)]
-
-@pytest.mark.parametrize('products, s', test_3)
-def test_count_sum_cart(products: Product, s: float):
-    cart_3 = Cart()
-    for p in products:
-        cart_3.add(p)
-    assert s == cart_3.count_sum()
-
-
-
+@pytest.mark.parametrize('name, price', test4)
+def test_price(name: str, price: float):
+    field_price = Product(name, price)
+    assert field_price.price == price
 
